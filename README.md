@@ -34,7 +34,7 @@ PORT = 4000
 MONGO_URI = your mongodb uri
 ```
 
-### Install Dependencies (frontend & backend)
+### Install Dependencies
 
 ```
 npm install
