@@ -10,7 +10,7 @@ import asyncHandler from '../middlewares/async.handler';
 const getMovies = asyncHandler(async (req: Request, res: Response) => {
   try {
     const movies = await Movie.find();
-    res.status(201).json(movies);
+    res.status(200).json(movies);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }
@@ -49,7 +49,7 @@ const addMovies = asyncHandler(async (req: Request, res: Response) => {
   const movie = new Movie(req.body);
   try {
     const newMovie = await movie.save();
-    res.status(201).json(newMovie);
+    res.status(201).json({ message: 'Movie added successfully', newMovie });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -68,7 +68,7 @@ const updateMovies = asyncHandler(async (req: Request, res: Response) => {
     if (!updatedMovie) {
       return res.status(404).json({ message: 'Movie not found' });
     }
-    res.json(updatedMovie);
+    res.json({ message: 'Movie updated successfully', updatedMovie });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -79,12 +79,6 @@ const updateMovies = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const deleteMovie = asyncHandler(async (req: Request, res: Response) => {
-  // Implement authentication logic to check for "admin" role
-  // For example:
-  // if (!req.user || req.user.role !== 'admin') {
-  //     return res.status(403).json({ message: 'Forbidden' });
-  // }
-
   const id = req.params.id;
   try {
     const deletedMovie = await Movie.findByIdAndDelete(id);
