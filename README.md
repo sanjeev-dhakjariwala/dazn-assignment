@@ -32,7 +32,6 @@ I have pushed `.env` intentionally for quick start. Please feel free to use you 
 ```
 PORT = 4000
 MONGO_URI = your mongodb uri
-
 ```
 
 ### Install Dependencies (frontend & backend)
@@ -46,5 +45,4 @@ npm install
 ```
 # Run Locally
 npm run dev
-
 ```
