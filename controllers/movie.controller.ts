@@ -85,7 +85,7 @@ const deleteMovie = asyncHandler(async (req: Request, res: Response) => {
     if (!deletedMovie) {
       return res.status(404).json({ message: 'Movie not found' });
     }
-    res.json(deletedMovie);
+    res.json({ message: 'Movie Deleted Successfully!!!', deletedMovie });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
