@@ -1,6 +1,11 @@
 const app = require('./app');
+const dotenv = require('dotenv');
+const connectToDB = require("../database/config")
 
-const PORT = process.env.PORT || 4000
+dotenv.config();
+connectToDB()
+
+const PORT = process.env.PORT || 4000;
 
 app.get('/', (req, res) => {
   res.status(200).send({
