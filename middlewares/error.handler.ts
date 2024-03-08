@@ -16,7 +16,7 @@ const errorHandler = (
   res.status(statusCode);
   res.send({
     message: err.message,
-    stack: err.stack,
+    stack: err.stack
   });
 };
 
