@@ -30,7 +30,7 @@ const searchMovies = asyncHandler(async (req: Request, res: Response) => {
       ]
     });
     if (result.length > 0) {
-      res.json(result);
+      res.status(200).json(result);
     } else {
       res.json({
         message: 'No movies found !!!'

@@ -23,31 +23,40 @@ describe('API Endpoints', () => {
       json: jest.fn()
     };
   });
-  //Test GET /api/movies
+
+  // Test GET /api/movies
   describe('GET /api/movies', () => {
-    afterEach;
-    () => {
+    afterEach(() => {
       jest.clearAllMocks();
-    };
+    });
+
     it('should return all movies', async () => {
       (Movie.find as jest.Mock).mockResolvedValueOnce(mockedMovies);
 
       await getMovies(req as Request, res as Response, next as NextFunction);
 
       expect(Movie.find).toHaveBeenCalledTimes(1);
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status).toHaveBeenCalledWith(200); // Success for getting all movies
       expect(res.json).toHaveBeenCalledWith(mockedMovies);
     });
+  });
 
-    it.only('should return all matching movies', async () => {
-      (Movie.find as jest.Mock).mockResolvedValueOnce(mockedMovies);
+  // Test GET /api/movies?q={query}
+  describe('GET /api/movies?q={query}', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should return matching movies for search query', async () => {
       req = {
         query: { q: 'action' }
       };
+      (Movie.find as jest.Mock).mockResolvedValueOnce(mockedMovies);
+
       await searchMovies(req as Request, res as Response, next as NextFunction);
 
       expect(Movie.find).toHaveBeenCalledTimes(1);
-      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.status).toHaveBeenCalledWith(200); // Success for search results (fixed from 201)
       expect(res.json).toHaveBeenCalledWith(mockedMovies);
     });
   });
