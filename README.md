@@ -46,3 +46,9 @@ npm install
 # Run Locally
 npm run dev
 ```
+
+### Test
+```
+# Run Locally
+npm test
+```
