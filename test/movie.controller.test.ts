@@ -1,30 +1,54 @@
-import { getMovies } from '../controllers/movie.controller';
+import { getMovies, searchMovies } from '../controllers/movie.controller';
 import { Request, Response, NextFunction } from 'express';
 import Movie, { IMovie } from '../database/models/Movie';
 import request from 'supertest';
 import app from '../server/app';
 
 // Mock the Movie model methods
-jest.mock('../database/models/Movie');
+jest.mock('../database/models/Movie', () => ({
+  find: jest.fn()
+}));
 
 describe('API Endpoints', () => {
+  let req: Partial<Request>;
+  let res: Partial<Response>;
+  let next: Partial<NextFunction>;
+
+  const mockedMovies = [{ title: 'Movie 1' }, { title: 'Movie 2' }];
+
+  beforeEach(() => {
+    req = {};
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+  });
   //Test GET /api/movies
   describe('GET /api/movies', () => {
+    afterEach;
+    () => {
+      jest.clearAllMocks();
+    };
     it('should return all movies', async () => {
-      const mockMovies = [{ title: 'Movie 1' }, { title: 'Movie 2' }]; // Example Movie data
+      (Movie.find as jest.Mock).mockResolvedValueOnce(mockedMovies);
 
-      (Movie.findOne as jest.Mock).mockResolvedValue(mockMovies[0]); // Mocking findOne to return a single movie object
+      await getMovies(req as Request, res as Response, next as NextFunction);
 
-      const mockRequest: any = {};
-      const mockJsonFn = jest.fn(); // Mocking the json function of response object
-      const mockResponse: any = {
-        status: jest.fn(() => ({ json: mockJsonFn }))
+      expect(Movie.find).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(mockedMovies);
+    });
+
+    it.only('should return all matching movies', async () => {
+      (Movie.find as jest.Mock).mockResolvedValueOnce(mockedMovies);
+      req = {
+        query: { q: 'action' }
       };
-      const mockNext: NextFunction = jest.fn();
+      await searchMovies(req as Request, res as Response, next as NextFunction);
 
-      await getMovies(mockRequest, mockResponse, mockNext);
-      expect(mockResponse.status).toHaveBeenCalledWith(200);
-      expect(mockJsonFn).toHaveBeenCalledWith(mockMovies[0]); // Expect the JSON data sent in the response
+      expect(Movie.find).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith(mockedMovies);
     });
   });
 });
