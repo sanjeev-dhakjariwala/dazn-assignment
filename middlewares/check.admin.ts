@@ -11,19 +11,19 @@ const admin = (req: Request, res: Response, next: NextFunction) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded.role === 'admin') {
           next();
-        }else{
-          throw new Error('You are not an admin!!!')
+        } else {
+          throw new Error('You are not an admin!!!');
         }
       } catch (err: any) {
         console.log(err.message);
         res.status(401);
-        throw new Error('Not authorized, token failed');
+        throw new Error(err.message);
       }
     } else {
       res.status(401);
       throw new Error('Not authorized, no token');
     }
-    next();
+    // next();
   } else {
     res.status(401);
     throw new Error(`Not authorized as admin`);
