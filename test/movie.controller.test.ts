@@ -1,4 +1,4 @@
-import { add, getMovies } from '../controllers/movie.controller';
+import { getMovies } from '../controllers/movie.controller';
 import { Request, Response, NextFunction } from 'express';
 import Movie, { IMovie } from '../database/models/Movie';
 import request from 'supertest';
