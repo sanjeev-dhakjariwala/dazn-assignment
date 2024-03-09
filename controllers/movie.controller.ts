@@ -46,10 +46,19 @@ const searchMovies = asyncHandler(async (req: Request, res: Response) => {
  */
 
 const addMovies = asyncHandler(async (req: Request, res: Response) => {
-  const movie = new Movie(req.body);
   try {
-    const newMovie = await movie.save();
-    res.status(201).json({ message: 'Movie added successfully', newMovie });
+    const movie = new Movie(req.body);
+    const result = await Movie.find({
+      $or: [{ title: { $regex: movie.title, $options: 'i' } }]
+    });
+    if (result.length > 0) {
+      res.json({
+        message: 'Movie already exists!!!'
+      });
+    } else {
+      await movie.save();
+      res.status(201).json({ message: 'Movie added successfully', movie });
+    }
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }

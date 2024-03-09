@@ -1,4 +1,3 @@
-import { timeStamp } from 'console';
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IMovie extends Document {
@@ -12,7 +11,8 @@ const MovieSchema: Schema = new Schema(
   {
     title: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     genre: {
       type: String,
