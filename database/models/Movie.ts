@@ -31,4 +31,5 @@ const MovieSchema: Schema = new Schema(
 );
 
 const Movie = mongoose.model<IMovie>('Movie', MovieSchema);
+export { IMovie };
 export default Movie;
