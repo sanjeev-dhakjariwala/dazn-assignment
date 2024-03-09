@@ -4,13 +4,16 @@ import jwt from 'jsonwebtoken';
 const admin = (req: Request, res: Response, next: NextFunction) => {
   if (req?.cookies?.jwt) {
     let token;
-
     token = req?.cookies?.jwt;
 
     if (token) {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        next();
+        if (decoded.role === 'admin') {
+          next();
+        }else{
+          throw new Error('You are not an admin!!!')
+        }
       } catch (err: any) {
         console.log(err.message);
         res.status(401);
@@ -26,3 +29,5 @@ const admin = (req: Request, res: Response, next: NextFunction) => {
     throw new Error(`Not authorized as admin`);
   }
 };
+
+export { admin };

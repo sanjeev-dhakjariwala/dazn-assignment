@@ -6,6 +6,10 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
   next(error);
 };
 
+/* const notAdmin = (req: Request, res: Response, next:NextFunction) =>{
+
+} */
+
 const errorHandler = (
   err: Error,
   req: Request,
@@ -14,9 +18,13 @@ const errorHandler = (
 ) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
+  if (err.message === 'You are not an admin!!!') {
+    res.send({
+      message: err.message
+    });
+  }
   res.send({
-    message: err.message,
-    stack: err.stack
+    message: err.message
   });
 };
 
