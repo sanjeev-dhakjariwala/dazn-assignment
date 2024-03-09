@@ -1,0 +1,28 @@
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+//User must be admin
+const admin = (req: Request, res: Response, next: NextFunction) => {
+  if (req?.cookies?.jwt) {
+    let token;
+
+    token = req?.cookies?.jwt;
+
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        next();
+      } catch (err: any) {
+        console.log(err.message);
+        res.status(401);
+        throw new Error('Not authorized, token failed');
+      }
+    } else {
+      res.status(401);
+      throw new Error('Not authorized, no token');
+    }
+    next();
+  } else {
+    res.status(401);
+    throw new Error(`Not authorized as admin`);
+  }
+};
