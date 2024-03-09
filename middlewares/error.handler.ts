@@ -18,11 +18,6 @@ const errorHandler = (
 ) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
-  if (err.message === 'You are not an admin!!!') {
-    res.send({
-      message: err.message
-    });
-  }
   res.send({
     message: err.message
   });
