@@ -12,6 +12,6 @@ const router = express.Router();
 
 router.route('/movies').get(getMovies).post(addMovies);
 router.route('/search').get(searchMovies);
-router.route('/movies/:id').put(updateMovies).delete(admin, deleteMovie);
+router.route('/movies/:id').put(admin, updateMovies).delete(admin, deleteMovie);
 
 export default router;
