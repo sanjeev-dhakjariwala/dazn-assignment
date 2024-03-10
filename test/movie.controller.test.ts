@@ -91,4 +91,39 @@ describe('Movies API', () => {
       );
     });
   });
+  describe('GET /api/search', () => {
+    it('should return movies matching the search query', async () => {
+      // Mock the Movie.find method to return mock data
+      (Movie.find as jest.Mock).mockResolvedValue([
+        { title: 'Test Movie 1', genre: 'Action' },
+        { title: 'Test Movie 2', genre: 'Comedy' }
+      ]);
+
+      const searchQuery = 'Test';
+      const response = await request(app)
+        .get('/api/search')
+        .query({ q: searchQuery });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([
+        { title: 'Test Movie 1', genre: 'Action' },
+        { title: 'Test Movie 2', genre: 'Comedy' }
+      ]);
+    });
+
+    it('should return message when no movies found', async () => {
+      // Mock the Movie.find method to return an empty array
+      (Movie.find as jest.Mock).mockResolvedValue([]);
+
+      const searchQuery = 'NonExistentMovie';
+      const response = await request(app)
+        .get('/api/search')
+        .query({ q: searchQuery });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        message: 'No movies found !!!'
+      });
+    });
+  });
 });
