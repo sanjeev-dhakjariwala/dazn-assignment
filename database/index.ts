@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 const connectToDB = async () => {
@@ -12,3 +13,5 @@ const connectToDB = async () => {
 };
 
 export default connectToDB;
+export const client = new MongoClient(MONGO_URI);
+export const db = client.db();
